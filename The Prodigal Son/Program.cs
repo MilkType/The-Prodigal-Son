@@ -9,7 +9,8 @@ namespace The_Prodigal_Son
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Running...");
+            var bot = new Bot();
+            bot.RunAsync().GetAwaiter().GetResult();
         }
     }
 }
