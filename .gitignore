@@ -361,4 +361,4 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-/The Prodigal Son/jsconfig1.json
+/The Prodigal Son/config.json
