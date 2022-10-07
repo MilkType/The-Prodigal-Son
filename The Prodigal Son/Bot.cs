@@ -2,11 +2,10 @@
 using DSharpPlus.CommandsNext;
 using DSharpPlus.EventArgs;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using The_Prodigal_Son.Commands;
 
 namespace The_Prodigal_Son
 {
@@ -41,10 +40,15 @@ namespace The_Prodigal_Son
             {
                 StringPrefixes = new string[] {configJson.Prefix},
                 EnableMentionPrefix = true,
-                EnableDms = false
+                EnableDms = true,
+                DmHelp = true
             };
 
             Commands = Client.UseCommandsNext(commandConfig);
+
+            Commands.RegisterCommands<FunCommands>();
+
+            Commands.RegisterCommands<TestCommands>();
 
             await Client.ConnectAsync();
 
