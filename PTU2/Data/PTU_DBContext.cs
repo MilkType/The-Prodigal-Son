@@ -2,6 +2,7 @@
 #nullable disable
 using Microsoft.EntityFrameworkCore;
 using The_Prodigal_Son.Models;
+using static The_Prodigal_Son.Utilities.DotEnv;
 
 namespace The_Prodigal_Son.Data
 {
@@ -29,7 +30,7 @@ namespace The_Prodigal_Son.Data
         {
             if (!optionsBuilder.IsConfigured)
             {
-                var ConnectionString = Environment.GetEnvironmentVariable("ConnectionString");
+                var ConnectionString = Fetch("ConnectionString");
                 optionsBuilder.UseSqlServer(ConnectionString);
             }
         }

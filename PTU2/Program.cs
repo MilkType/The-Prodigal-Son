@@ -6,6 +6,6 @@ var root = Directory.GetCurrentDirectory();
 var dotenv = Path.Combine(root, ".env");
 DotEnv.Load(dotenv);
 
-//Start Bot
+//Instantiate Bot
 var bot = new Bot();
 bot.RunAsync().GetAwaiter().GetResult();

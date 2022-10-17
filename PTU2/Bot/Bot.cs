@@ -1,20 +1,25 @@
 ﻿using DSharpPlus;
-using DSharpPlus.CommandsNext;
+using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
+using DSharpPlus.SlashCommands;
+using The_Prodigal_Son.Commands;
+using The_Prodigal_Son.Data;
+using static The_Prodigal_Son.Utilities.DotEnv;
+
 
 namespace The_Prodigal_Son.Bot
 {
     public class Bot
     {
 
-        public DiscordClient Client { get; private set; }
-        public CommandsNextExtension Commands { get; private set; }
+        public DiscordClient? Client { get; private set; }
+        public SlashCommandsExtension? slash { get; private set; }
 
         public async Task RunAsync()
         {
             var config = new DiscordConfiguration
             {
-                Token = Environment.GetEnvironmentVariable("Token"),
+                Token = Fetch("Token"),
                 TokenType = TokenType.Bot,
                 AutoReconnect = true,
                 MinimumLogLevel = Microsoft.Extensions.Logging.LogLevel.Debug
@@ -24,19 +29,9 @@ namespace The_Prodigal_Son.Bot
 
             Client.Ready += OnReady;
 
-            var commandConfig = new CommandsNextConfiguration
-            {
-                StringPrefixes = new string[] { Environment.GetEnvironmentVariable("Prefix") },
-                EnableMentionPrefix = true,
-                EnableDms = true,
-                DmHelp = true
-            };
-
-            Commands = Client.UseCommandsNext(commandConfig);
-
-            //Commands.RegisterCommands<FunCommands>();
-
-            //Commands.RegisterCommands<TestCommands>();
+            slash = Client.UseSlashCommands();
+            
+            slash.RegisterCommands<SlashTstCmd>(806718602380181594);
 
             await Client.ConnectAsync();
 
