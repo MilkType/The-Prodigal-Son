@@ -20,7 +20,7 @@ namespace The_Prodigal_Son.Data
         public virtual DbSet<Character> Characters { get; set; }
         public virtual DbSet<Move> Moves { get; set; }
         public virtual DbSet<Player> Players { get; set; }
-        public virtual DbSet<Pokedex> Pokedices { get; set; }
+        public virtual DbSet<Pokedex> Pokedex { get; set; }
         public virtual DbSet<PokemonOwned> PokemonOwneds { get; set; }
         public virtual DbSet<PokemonStat> PokemonStats { get; set; }
         public virtual DbSet<Skill> Skills { get; set; }

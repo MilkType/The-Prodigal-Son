@@ -1,8 +1,8 @@
 ﻿using DSharpPlus;
 using DSharpPlus.Entities;
 using DSharpPlus.SlashCommands;
-using Microsoft.EntityFrameworkCore;
 using The_Prodigal_Son.Data;
+using The_Prodigal_Son.PTU;
 using static The_Prodigal_Son.PTU.PTU_Resources;
 using static The_Prodigal_Son.Utilities.DotEnv;
 
@@ -29,7 +29,7 @@ namespace The_Prodigal_Son.Commands
             var mode = newmode;
             var result = SetMode(mode);
             LogStep(ctx, result);
-            await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder().WithContent(result));
+            await Messages.SendNormal(ctx, result);
         }
 
         [SlashCommand("PlayersTest", "A slash command made to list players!")]
@@ -41,19 +41,29 @@ namespace The_Prodigal_Son.Commands
             var result2 = result1.ToList();
             var result = "Players found:\n" + String.Join("\n", result2.Select(x => x.DiscordId));
             LogStep(ctx, result);
-            await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder().WithContent(result));
+            await Messages.SendNormal(ctx, result);
         }
 
-        [SlashCommand("DexTest", "A slash command made to list players!")]
-        public async Task StatsTest(InteractionContext ctx, [Option("stat", "Stat to roll!")] string stat)
+        [SlashCommand("DexTest", "A slash command made to return a pokemon!")]
+        public async Task DexTest(InteractionContext ctx, [Option("poke", "Pokemon to get!")] string poke)
         {
-            string[] args = new string[] { stat };
+            string[] args = new string[] { poke };
             LogStart(ctx, args);
-            var result1 = PTUDB.Players;
-            var result2 = result1.ToList();
-            var result = "Players found:\n" + String.Join("\n", result2.Select(x => x.DiscordId));
+            var result_name = PTUDB.Pokedex.Single(n => n.PokemonName.Contains(poke)).PokemonName.ToString();
+            var result = "Pokemon found: " + result_name;
             LogStep(ctx, result);
-            await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder().WithContent(result));
+            await Messages.SendNormal(ctx, result);
+        }
+
+        [SlashCommand("StatTest", "A slash command made to check a skill!")]
+        public async Task StatTest(InteractionContext ctx, [Option("stat", "Stat to check!")] string poke)
+        {
+            string[] args = new string[] { poke };
+            LogStart(ctx, args);
+            var result_name = PTUDB.Pokedex.Single(n => n.PokemonName.Contains(poke)).PokemonName.ToString();
+            var result = "Pokemon found: " + result_name;
+            LogStep(ctx, result);
+            await Messages.SendNormal(ctx, result);
         }
     }
 }

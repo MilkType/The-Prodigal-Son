@@ -12,7 +12,7 @@ namespace The_Prodigal_Son.Bot
     public class Bot
     {
 
-        public DiscordClient? Client { get; private set; }
+        public DiscordClient? client { get; private set; }
         public SlashCommandsExtension? slash { get; private set; }
 
         public async Task RunAsync()
@@ -25,15 +25,15 @@ namespace The_Prodigal_Son.Bot
                 MinimumLogLevel = Microsoft.Extensions.Logging.LogLevel.Debug
             };
 
-            Client = new DiscordClient(config);
+            client = new DiscordClient(config);
 
-            Client.Ready += OnReady;
+            client.Ready += OnReady;
 
-            slash = Client.UseSlashCommands();
+            slash = client.UseSlashCommands();
             
             slash.RegisterCommands<SlashTstCmd>(806718602380181594);
 
-            await Client.ConnectAsync();
+            await client.ConnectAsync();
 
             await Task.Delay(-1);
         }
