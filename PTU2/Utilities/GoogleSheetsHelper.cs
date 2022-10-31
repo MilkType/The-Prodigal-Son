@@ -6,30 +6,21 @@ namespace The_Prodigal_Son.Utilities
 {
     public class GoogleSheetsHelper
     {
-        public SheetsService Service { get; set; }
-        const string APPLICATION_NAME = "PTU2";
-        static readonly string[] Scopes = { SheetsService.Scope.Spreadsheets };
-        public GoogleSheetsHelper()
+        public SheetsService sheets { get; private set; }
+        public async Task<SheetsService> GetSheetsServiceAsync() 
         {
-            InitializeService();
-        }
-        private void InitializeService()
-        {
-            var credential = GetCredentialsFromFile();
-            Service = new SheetsService(new BaseClientService.Initializer()
+            var credential =
+                    await GoogleWebAuthorizationBroker.AuthorizeAsync(
+                    GoogleClientSecrets.FromFile("token.json").Secrets,
+                    new[] { SheetsService.Scope.Spreadsheets },
+                    "user", CancellationToken.None);
+
+            sheets = new SheetsService(new BaseClientService.Initializer()
             {
                 HttpClientInitializer = credential,
-                ApplicationName = APPLICATION_NAME
+                ApplicationName = "The Prodigal Son",
             });
-        }
-        private GoogleCredential GetCredentialsFromFile()
-        {
-            GoogleCredential credential;
-            using (var stream = new FileStream("token.json", FileMode.Open, FileAccess.Read))
-            {
-                credential = GoogleCredential.FromStream(stream).CreateScoped(Scopes);
-            }
-            return credential;
+            return sheets;
         }
     }
 }

@@ -2,6 +2,10 @@
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
 using DSharpPlus.SlashCommands;
+using Google.Apis.Auth.OAuth2;
+using Google.Apis.Services;
+using Google.Apis.Sheets.v4;
+using Google.Apis.Util.Store;
 using The_Prodigal_Son.Commands;
 using The_Prodigal_Son.Data;
 using static The_Prodigal_Son.Utilities.DotEnv;

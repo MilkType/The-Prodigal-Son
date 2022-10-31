@@ -3,6 +3,7 @@ using DSharpPlus.Entities;
 using DSharpPlus.SlashCommands;
 using The_Prodigal_Son.Data;
 using The_Prodigal_Son.PTU;
+using The_Prodigal_Son.Utilities;
 using static The_Prodigal_Son.PTU.PTU_Resources;
 using static The_Prodigal_Son.Utilities.DotEnv;
 
@@ -11,6 +12,8 @@ namespace The_Prodigal_Son.Commands
 {
     public class SlashTstCmd : ApplicationCommandModule
     {
+        public static GoogleSheetsHelper sheetsService = new GoogleSheetsHelper();
+            
         public static PTU_DBContext PTUDB = new PTU_DBContext();
 
         [SlashCommand("LogTest", "A slash command made to test logging to discord log channel!")]
@@ -55,13 +58,14 @@ namespace The_Prodigal_Son.Commands
             await Messages.SendNormal(ctx, result);
         }
 
-        [SlashCommand("StatTest", "A slash command made to check a skill!")]
-        public async Task StatTest(InteractionContext ctx, [Option("stat", "Stat to check!")] string poke)
+        [SlashCommand("SheetTest", "A slash command made to check a sheet!")]
+        public async Task SheetTest(InteractionContext ctx, [Option("link", "Sheet to check!")] string link)
         {
-            string[] args = new string[] { poke };
+            var sheets = await sheetsService.GetSheetsServiceAsync();
+            string[] args = new string[] { link };
             LogStart(ctx, args);
-            var result_name = PTUDB.Pokedex.Single(n => n.PokemonName.Contains(poke)).PokemonName.ToString();
-            var result = "Pokemon found: " + result_name;
+            var result = sheets.Spreadsheets.Values.BatchGet(link).ToString();
+            Console.WriteLine(result);
             LogStep(ctx, result);
             await Messages.SendNormal(ctx, result);
         }
