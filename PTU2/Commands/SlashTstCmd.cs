@@ -1,6 +1,8 @@
 ﻿using DSharpPlus;
 using DSharpPlus.Entities;
 using DSharpPlus.SlashCommands;
+using Google.Apis.Sheets.v4;
+using Google.Apis.Sheets.v4.Data;
 using The_Prodigal_Son.Data;
 using The_Prodigal_Son.PTU;
 using The_Prodigal_Son.Utilities;
@@ -12,7 +14,7 @@ namespace The_Prodigal_Son.Commands
 {
     public class SlashTstCmd : ApplicationCommandModule
     {
-        public static GoogleSheetsHelper sheetsService = new GoogleSheetsHelper();
+        public static SpreadsheetsResource sheetsService = new GoogleSheetsHelper().GetSheetsServiceAsync().Result.Spreadsheets;
             
         public static PTU_DBContext PTUDB = new PTU_DBContext();
 
@@ -61,10 +63,17 @@ namespace The_Prodigal_Son.Commands
         [SlashCommand("SheetTest", "A slash command made to check a sheet!")]
         public async Task SheetTest(InteractionContext ctx, [Option("link", "Sheet to check!")] string link)
         {
-            var sheets = await sheetsService.GetSheetsServiceAsync();
             string[] args = new string[] { link };
             LogStart(ctx, args);
-            var result = sheets.Spreadsheets.Values.BatchGet(link).ToString();
+
+            var request = sheetsService.Get(link);
+            var resultslist = request.Execute().Sheets;
+            string result = "";
+            foreach(Sheet sheet in resultslist)
+            {
+                result += sheet.Properties.Title.ToString();
+                result += ", ";
+            }
             Console.WriteLine(result);
             LogStep(ctx, result);
             await Messages.SendNormal(ctx, result);
