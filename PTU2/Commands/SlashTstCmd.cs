@@ -66,14 +66,29 @@ namespace The_Prodigal_Son.Commands
             string[] args = new string[] { link };
             LogStart(ctx, args);
 
-            var request = sheetsService.Get(link);
-            var resultslist = request.Execute().Sheets;
+            var request = sheetsService.Values.BatchGet(link);
+            var ranges = new List<string>();
+            ranges.Add("B1"); //name
+            ranges.Add("E13"); //Acrobatics
+            ranges.Add("E14"); //Athletics
+            ranges.Add("E15"); //Charm
+            ranges.Add("E16"); //Combat
+            ranges.Add("E17"); //Command
+            ranges.Add("E18"); //General Ed
+            ranges.Add("E19"); //Medicine Ed
+            ranges.Add("E20"); //Occult Ed
+            ranges.Add("E21"); //Pokemon Ed
+            ranges.Add("E22"); //Technology Ed
+            ranges.Add("E23"); //Focus
+            ranges.Add("E24"); //Guile
+            ranges.Add("E25"); //Intimidate
+            ranges.Add("E26"); //Intuition
+            ranges.Add("E27"); //Perception
+            ranges.Add("E28"); //Stealth
+            ranges.Add("E29"); //Survival
+            request.Ranges = ranges;
+            var resultslist = request.Execute();
             string result = "";
-            foreach(Sheet sheet in resultslist)
-            {
-                result += sheet.Properties.Title.ToString();
-                result += ", ";
-            }
             Console.WriteLine(result);
             LogStep(ctx, result);
             await Messages.SendNormal(ctx, result);

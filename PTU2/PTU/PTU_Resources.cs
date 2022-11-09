@@ -1,6 +1,9 @@
 ﻿using DSharpPlus.Entities;
 using DSharpPlus.SlashCommands;
+using Google.Apis.Sheets.v4.Data;
+using System.CodeDom;
 using System.Diagnostics.Metrics;
+using The_Prodigal_Son.Models;
 using The_Prodigal_Son.Utilities;
 
 namespace The_Prodigal_Son.PTU
@@ -35,6 +38,14 @@ namespace The_Prodigal_Son.PTU
             catch { return; }
  
             
+        }
+
+        public Character ParseCharacter(InteractionContext ctx, string link, Sheet sheet)
+        {
+            var ch = new Character();
+            ch.CharacterName = sheet.Data;
+
+            return ch;
         }
     
     }

@@ -7,7 +7,7 @@ namespace The_Prodigal_Son.Utilities
     public class GoogleSheetsHelper
     {
         public SheetsService sheets { get; private set; }
-        public async Task<SheetsService> GetSheetsServiceAsync() 
+        public async void StartSheets() 
         {
             var credential =
                     await GoogleWebAuthorizationBroker.AuthorizeAsync(
@@ -20,7 +20,6 @@ namespace The_Prodigal_Son.Utilities
                 HttpClientInitializer = credential,
                 ApplicationName = "The Prodigal Son",
             });
-            return sheets;
         }
     }
 }
